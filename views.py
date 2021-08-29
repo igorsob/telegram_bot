@@ -131,8 +131,9 @@ class CalendarView(View):
         await self.button_refresh()
 
     async def empty(self):
-        await Calendar.create(user_id=self.user.id, year=self.user.stage_metadata['year'], month=self.user.stage_metadata['month'], day=self.user.stage_metadata['day'], text=self.action)
-        await self.button_refresh()
+        if self.user.stage_metadata['meta_stage'] == 'calendar':
+            await Calendar.create(user_id=self.user.id, year=self.user.stage_metadata['year'], month=self.user.stage_metadata['month'], day=self.user.stage_metadata['day'], text=self.action)
+            await self.button_refresh()
 
     async def get_doings(self):
         doings = await Calendar.filter(user_id=self.user.id, year=self.user.stage_metadata['year'], month=self.user.stage_metadata['month'], day=self.user.stage_metadata['day'])
