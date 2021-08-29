@@ -61,6 +61,23 @@ class Model:
             setattr(instance, key, value)
         return instance
 
+    @classmethod
+    async def filter(cls, **kwargs):
+        rows = await (await db.conn.execute(
+            cls.Meta.table.select().where(
+                *[getattr(cls.Meta.table.c, key) == value for key, value in kwargs.items()]
+            )
+        )).fetchall()
+        if not rows:
+            return []
+        instances = []
+        for row in rows:
+            instance = cls()
+            for key, value in dict(row).items():
+                setattr(instance, key, value)
+            instances.append(instance)
+        return instances
+
     async def save(self):
         await db.conn.execute(self.Meta.table.update().where(
             getattr(self.Meta.table.c, self.Meta.pk_field) == getattr(self, self.Meta.pk_field)

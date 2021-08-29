@@ -11,6 +11,7 @@ class Users(Model):
     language_code = Field(sa.String(255), default='')
     main_message_id = Field(sa.Integer, nullable=True)
     stage = Field(sa.String(255), default='')
+    stage_metadata = Field(sa.JSON, default={})
 
     class Meta:
         name = 'users'
@@ -30,4 +31,18 @@ class Users(Model):
         return user
 
 
+class Calendar(Model):
+    id = Field(sa.Integer, primary_key=True)
+    user_id = Field(sa.Integer)
+    year = Field(sa.Integer)
+    month = Field(sa.Integer)
+    day = Field(sa.Integer)
+    text = Field(sa.Text, default='')
+
+    class Meta:
+        name = 'calendar'
+        pk_field = 'id'
+
+
 Users.init_model()
+Calendar.init_model()

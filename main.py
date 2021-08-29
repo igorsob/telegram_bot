@@ -3,8 +3,7 @@ import logging
 from aiogram import Bot, Dispatcher, executor
 from framework.database import setup_db
 from framework.router import Router
-from views import StartView, MainView, CalcView
-
+from views import StartView, MainView, CalcView, CalendarView
 
 
 API_TOKEN = '1961919405:AAF5HddmljDqsGTe-Upip0YCeFO7XsZ7LIQ'
@@ -20,6 +19,7 @@ router = Router(StartView)
 
 router.add_route(MainView)
 router.add_route(CalcView)
+router.add_route(CalendarView)
 
 dp.message_handler()(router)
 dp.callback_query_handler()(router)
